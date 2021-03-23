@@ -86,7 +86,6 @@ def buscarusuario():
 
 def home(request):
     try:
-        
         if request.method == 'POST':
             print("Metodo post")
             nombre = request.POST['nombrei']
@@ -98,25 +97,13 @@ def home(request):
             print(users)
             return render(request, 'home.html', {'users':users})
         else:
-            print("Metodo get")
-            users = buscarusuario()
-            print(users)
-            return render(request, 'home.html', {'users':users})
-        """
-        usuarios = Formulario(request.POST, request.FILES)
-        if usuarios.is_valid():
-            usuarios.save()
-            users = buscarusuario()
-            return render(request, 'home.html', {'users':users})
-        """
-        """
-        nombre = request.GET["nombrei"]
-        apellidos = request.GET["apellidosi"]
-        correo = request.GET["emaili"]
-        huellas = request.GET["huellasi"].FILES
-        guardarusuario(nombre, apellidos, correo, huellas)
-        users = buscarusuario()
-        """
+            buscar = request.GET['buscar']
+            try:
+                usuarioBuscado = User.objects.get(nombre=buscar)
+                return render(request, 'home.html', {'buscar':usuarioBuscado, 'msj':'Encontrado'})
+            except:
+                users = buscarusuario()
+                return render(request, 'home.html', {'users':users, 'msj':'Error'})
         
     except:
         users = buscarusuario()
@@ -126,5 +113,28 @@ def add(request):
     formulario = Formulario()
     return render(request, 'add.html', {'formulario':formulario})
 
+def edit(request, nombre):
+    usuarioBuscado = User.objects.get(nombre=nombre)
+    return render(request, 'edit.html', {'user':usuarioBuscado})
+
 def check(request):
     pass
+
+
+def codigonoutilizado():
+    pass
+    """
+    usuarios = Formulario(request.POST, request.FILES)
+    if usuarios.is_valid():
+        usuarios.save()
+        users = buscarusuario()
+        return render(request, 'home.html', {'users':users})
+    """
+    """
+    nombre = request.GET["nombrei"]
+    apellidos = request.GET["apellidosi"]
+    correo = request.GET["emaili"]
+    huellas = request.GET["huellasi"].FILES
+    guardarusuario(nombre, apellidos, correo, huellas)
+    users = buscarusuario()
+    """

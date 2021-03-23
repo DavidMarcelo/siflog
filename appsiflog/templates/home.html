@@ -19,16 +19,20 @@
             <a href="/add" class="btn btn-primary" >Agrear nuevo usuario</a>
           </div>
           <div class="col-4">
-            <form class="form-inline">
-                <input class="form-control mr-sm-1" type="search" placeholder="Buscar usuario..." aria-label="Search">
+            <form class="form-inline" method="GET" action="/home/">
+                <input class="form-control mr-sm-1" name="buscar" type="search" placeholder="Buscar usuario..." aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
             </form>
           </div>
         </div>
     </div>
-    {% if msj %}
+    {% if msj == "ok" %}
         <div class="alert alert-success" role="alert">
             Usuario registrado exitosamente...
+        </div>
+    {% elif msj == "Error" %}
+        <div class="alert alert-danger" role="alert">
+            Usuario no encontrado...
         </div>
     {% endif %}
     <table class="table table-striped table-hover">
@@ -44,24 +48,40 @@
             </tr>
         </thead>
         <tbody>
-            {% for user in users %}
-            <tr>
-                <th scope="row">{{ user.id }}</th>
-                <td>{{ user.nombre }}</td>
-                <td>{{ user.apellidos }}</td>
-                <td>{{ user.email }}</td>
-                <td><img width="60px" height="60px" src="{{ user.huellas.url }}"></td>
-                <td>
-                  <form action="/edit/" method="post">
-                    {% csrf_token %}                    
-                    <input type="submit" placeholder="Editar">
-                  </form>
-                </td>
-                <td>
-                  Eliminar
-                </td>
-            </tr>
-            {% endfor %}
+            {% if buscar %}
+                <tr>
+                    <th scope="row">{{ buscar.id }}</th>
+                    <td>{{ buscar.nombre }}</td>
+                    <td>{{ buscar.apellidos }}</td>
+                    <td>{{ buscar.email }}</td>
+                    <td><img width="60px" height="60px" src="{{ buscar.huellas.url }}"></td>
+                    <td>
+                    <form action="/edit/" method="post">
+                        {% csrf_token %}                    
+                        <input type="submit" placeholder="Editar">
+                    </form>
+                    </td>
+                    <td>
+                    Eliminar
+                    </td>
+                </tr>
+            {% else %}
+                {% for user in users %}
+                <tr>
+                    <th scope="row">{{ user.id }}</th>
+                    <td>{{ user.nombre }}</td>
+                    <td>{{ user.apellidos }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><img width="60px" height="60px" src="{{ user.huellas.url }}"></td>
+                    <td>
+                        <a href="{% url 'editar' user.nombre %}" class="btn btn-success">Editar</a>
+                    </td>
+                    <td>
+                    Eliminar
+                    </td>
+                </tr>
+                {% endfor %}
+            {% endif %}
         </tbody>
     </table>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>

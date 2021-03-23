@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from appsiflog.views import iniciarSesion, home, add, check
+from appsiflog.views import iniciarSesion, home, add, check, edit
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,7 +24,8 @@ urlpatterns = [
     path('sesion/', iniciarSesion),
     path('home/', home),
     path('add/', add),
-    path('check/', check)
+    path('check/', check),
+    path('edit/<str:nombre>', edit, name="editar"),
 ]
 
 if settings.DEBUG:
