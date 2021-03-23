@@ -1,0 +1,44 @@
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar usuario</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+</head>
+<body>
+    <br>
+    {% if formulario.errors %}
+        <div class="alert alert-danger" role="alert">
+            El usuario no se puedo guardar...
+        </div>
+    {% endif %}
+    <div class="col align-self-center col-md-6 offset-md-3">
+        <form action="/home/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="nombrei" id="nombreli" placeholder="Nombre completo">
+                <label for="nombreli">Nombre</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" name="apellidosi" id="apellidosli" placeholder="Apellidos">
+                <label for="apellidosli">Apellidos</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" name="emaili" id="emailli" placeholder="name@example.com">
+                <label for="emailli">Correo</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="file" class="form-control" name="huellasi" id="huellasli" placeholder="Ingrese su huella 5 veces">
+                <!--<label for="huellasli">Agregar huella</label>-->
+                <!--<img src="../templates/img/huella2.png">-->
+            </div>
+            <input type="submit" class="btn btn-primary btn-lg btn-block">
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+</body>
+</html>
