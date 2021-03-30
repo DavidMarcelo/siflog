@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistencias</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!--<script src="./js/exp.js"></script>-->
+</head>
+<body>
+    <br><br>
+    <!-- Example split danger button -->
+    <div class="btn-group">
+        <!--<button type="button" class="btn btn-danger">Action</button>-->
+        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="sr-only">Menu</span>
+        </button>
+        <div class="dropdown-menu">
+            <button class="dropdown-item" id="expExcel">Exportar a Excel</button>
+            <a class="dropdown-item" href="#">Exportar a PDF</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/historial">Historial</a>
+        </div>
+    </div>
+    <table class="table table-striped table-hover text-center" id="tabla">
+        <thead class="thead-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Entrada</th>
+                <th>Salida</th>
+                <th>Fecha</th>
+                <th>Asistencia</th>
+                <th hidden>Horas extras</th>
+                <th hidden>Permisos</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--Aqui va el for para mostrar la tabla-->
+            <tr>
+                <td>nombre</td>
+                <td>Hora de entrada</td>
+                <td>Hora de salida</td>
+                <td>Fecha</td>
+                <td>si o no</td>
+                <td hidden>horas extras</td>
+                <td hidden>Si</td>
+            </tr>
+        </tbody>
+    </table>
+
+    
+    <script>
+        function addZero(i) {
+            if (i < 10) {
+                i = '0' + i;
+            }
+            return i;
+        }
+        const $expExcel = document.querySelector("#expExcel");
+        $tabla = document.querySelector("#tabla");
+        $expExcel.addEventListener("click", function(){
+            console.log('Aqui');
+            //Creamos un Elemento Temporal en forma de enlace
+            var tmpElemento = document.createElement('a');
+            // obtenemos la información desde el div que lo contiene en el html
+            // Obtenemos la información de la tabla
+            var data_type = 'data:application/vnd.ms-excel';
+            var tabla_div = document.getElementById('tabla');
+            var tabla_html = tabla_div.outerHTML.replace(/ /g, '%20');
+            tmpElemento.href = data_type + ', ' + tabla_html;
+            //Asignamos el nombre a nuestro EXCEL
+            tmpElemento.download = 'Nombre_De_Mi_Excel.xls';
+            // Simulamos el click al elemento creado para descargarlo
+            tmpElemento.click();
+        });
+
+        var temp = 600000;//equivale a 10 minutos
+        //var temp = 60000;//Equivale a 1 minuto.
+        minuto();
+        //Obtener el minuto exacto
+        function fgm(){
+            var h = new Date();
+            var getMinuto = h.getMinutes();
+            return getMinuto;
+        }
+
+        function fgh(){
+            var h = new Date();
+            var getHora = h.getHours();
+            return getHora;
+        }
+
+        //Comprar el minuto obtenido
+        function minuto(){
+            //Si es mayor a 50 se ejecuta cada minuto
+            var getMinuto = fgm();
+            if (getMinuto>50){
+                if (getMinuto==59){
+                    var gHora = fgh();
+                    activar(gHora);
+                    temp = 600000;//equivale a 10 minutos 
+                    location.reload();
+                    //minuto();
+                }else{
+                    temp = 60000;//Equivale a 1 minuto.
+                    setTimeout(function() {
+                        minuto();
+                    }, temp);
+                }
+            }else{
+                //Si es menor que 50 se ejecuta cada 10 minutos
+                setTimeout(function() {
+                    minuto();
+                }, temp);
+            }
+        }
+        var horaEntrada;
+        var horaSalida;
+        var horaExtra;
+
+        function activar(){
+            if (gethora <= horaEntrada){
+                //Definir la hora de entrada
+                if(gethora>horaEntrada && gethora<(horaEntrada+1)){
+                    //Llego tarde y sumarle los minutos que llego tarde
+                }
+            }
+            if(gethora <= horaSalida){
+                //Definir la hora de salida
+            }
+            if(gethora > horaSalida){
+                //Contador de horas extras del trabajador
+                horaExtra = gethora - horaSalida;
+                getMinuto = hora.getMinutes();
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

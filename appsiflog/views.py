@@ -87,14 +87,12 @@ def buscarusuario():
 def home(request):
     try:
         if request.method == 'POST':
-            print("Metodo post")
             nombre = request.POST['nombrei']
             apellidos = request.POST['apellidosi']
             correo = request.POST['emaili']
             huellas = request.FILES['huellasi']
             guardarusuario(nombre, apellidos, correo, huellas)
             users = buscarusuario()
-            print(users)
             return render(request, 'home.html', {'users':users})
         else:
             buscar = request.GET['buscar']
@@ -117,8 +115,27 @@ def edit(request, nombre):
     usuarioBuscado = User.objects.get(nombre=nombre)
     return render(request, 'edit.html', {'user':usuarioBuscado})
 
+def delete(request, id):
+    user = User.objects.get(pk=id)
+    user.delete()
+    users = User.objects.all()
+    return render(request, 'home.html', {'users':users, 'msj':'Eliminado'})
+
+def obtenerHuella():
+    huella = "Obtendremos la huella en formato de imagen"
+    return huella
+
+def comparar():
+    huellaUsuario = "Regresa un objeto con los datos de el usuario"
+    bandera = False #Cierto cuando el usuario es identificado y falso cuando no es lo mismo
+    return huellaUsuario, bandera
+
 def check(request):
-    pass
+    obtenerHuella()#Le enviamos de parametro la imagen de la huella.
+    comparar()
+    #if bandera==True:
+    #    print("Hacemos una accion de espera del evento, cuando el usuario ingresa su huella al identificador")
+    return render(request, 'check.html')
 
 
 def codigonoutilizado():
